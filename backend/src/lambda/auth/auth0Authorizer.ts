@@ -1,6 +1,5 @@
 import { CustomAuthorizerEvent, CustomAuthorizerResult } from "aws-lambda";
 import "source-map-support/register";
-
 import { verify, decode } from "jsonwebtoken";
 import { createLogger } from "../../utils/logger";
 import Axios from "axios";
@@ -8,10 +7,6 @@ import { Jwt } from "../../auth/Jwt";
 import { JwtPayload } from "../../auth/JwtPayload";
 
 const logger = createLogger("auth");
-
-// TODO: Provide a URL that can be used to download a certificate that can be used
-// to verify JWT token signature.
-// To get this URL you need to go to an Auth0 page -> Show Advanced Settings -> Endpoints -> JSON Web Key Set
 const jwksUrl =
   "https://dev-24rmhuqbivfbg1bo.us.auth0.com/.well-known/jwks.json";
 
@@ -59,10 +54,7 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   const token = getToken(authHeader);
   const jwt: Jwt = decode(token, { complete: true }) as Jwt;
 
-  // TODO: Implement token verification
-  // You should implement it similarly to how it was implemented for the exercise for the lesson 5
-  // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
-  let res = await Axios.get(jwksUrl, {
+  const res = await Axios.get(jwksUrl, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -71,7 +63,7 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
     },
   });
 
-  let key = await getSigningKey(res.data.keys, jwt.header.kid);
+  const key = await getSigningKey(res.data.keys, jwt.header.kid);
 
   return verify(token, key.publicKey, { algorithms: ["RS256"] }) as JwtPayload;
 }
@@ -83,8 +75,8 @@ function getToken(authHeader: string): string {
     throw new Error("Invalid authentication header");
 
   const split = authHeader.split(" ");
-  const token = split[1];  
-  console.log(`getToken ${token}`)
+  const token = split[1];
+  console.log(`getToken ${token}`);
 
   return token;
 }
@@ -92,23 +84,23 @@ function getToken(authHeader: string): string {
 const getSigningKey = async (keys, kid) => {
   const signingKeys = keys
     .filter(
-      key =>        
-        key.use === "sig" && // JWK property `use` determines the JWK is for signing        
-        key.kty === "RSA" && // We are only supporting RSA        
-        key.kid && // The `kid` must be present to be useful for later        
+      (key) =>
+        key.use === "sig" && // JWK property `use` determines the JWK is for signing
+        key.kty === "RSA" && // We are only supporting RSA
+        key.kid && // The `kid` must be present to be useful for later
         ((key.x5c && key.x5c.length) || (key.n && key.e)) // Has useful public keys (we aren't using n or e)
     )
-    .map(key => {
-      return { 
-        kid: key.kid, 
-        nbf: key.nbf, 
-        publicKey: certToPEM(key.x5c[0])
+    .map((key) => {
+      return {
+        kid: key.kid,
+        nbf: key.nbf,
+        publicKey: certToPEM(key.x5c[0]),
       };
     });
 
   if (!signingKeys) {
     logger.error("The JWKS endpoint did not contain any signing keys");
-    throw new Error('The JWKS endpoint did not contain any signing keys');
+    throw new Error("The JWKS endpoint did not contain any signing keys");
   }
 
   const signingKey = signingKeys.find((key) => key.kid === kid);
@@ -118,7 +110,7 @@ const getSigningKey = async (keys, kid) => {
   }
 
   logger.info("Signing keys created successfully ", signingKey);
-  console.log(`getSigningKey ${signingKey}`)
+  console.log(`getSigningKey ${signingKey}`);
 
   return signingKey;
 };
@@ -126,6 +118,6 @@ const getSigningKey = async (keys, kid) => {
 const certToPEM = (cert) => {
   cert = cert.match(/.{1,64}/g).join("\n");
   cert = `-----BEGIN CERTIFICATE-----\n${cert}\n-----END CERTIFICATE-----\n`;
-  console.log(`certToPEM ${cert}`)
+  console.log(`certToPEM ${cert}`);
   return cert;
 };
