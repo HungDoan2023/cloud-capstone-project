@@ -2,21 +2,21 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
-import { updateTodo } from '../../helpers/todos'
-import { UpdateTodoRequest } from '../../requests/UpdateTodoRequest'
+import { updateProduct } from '../../helpers/product'
+import { UpdateProductRequest } from '../../requests/UpdateProductRequest'
 import { getUserId } from '../utils'
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const todoId = event.pathParameters.todoId
-    const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
+    const productId = event.pathParameters.productId
+    const updatedPRODUCT: UpdateProductRequest = JSON.parse(event.body)
     const userId = getUserId(event)
-    const updatedTodoItem = await updateTodo(todoId, userId, updatedTodo);
+    const updatedProductItem = await updateProduct(productId, userId, updatedPRODUCT);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        updatedTodoItem
+        updatedProductItem
       })
     };
   }

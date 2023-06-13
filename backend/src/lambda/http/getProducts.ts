@@ -1,25 +1,25 @@
 import "source-map-support/register";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import * as middy from "middy";
-import { cors, httpErrorHandler } from "middy/middlewares";
-import { deleteTodo } from "../../helpers/todos";
+import { cors } from "middy/middlewares";
+import { getAllProducts } from "../../helpers/product";
 import { getUserId } from "../utils";
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const todoId = event.pathParameters.todoId;
     const userId = getUserId(event);
-
-    await deleteTodo(todoId, userId);
+    const PRODUCTs = await getAllProducts(userId);
 
     return {
-      statusCode: 201,
-      body: JSON.stringify({}),
-    };
+      statusCode: 200,
+      body: JSON.stringify({
+        items: PRODUCTs,
+      })
+    }
   }
 );
 
-handler.use(httpErrorHandler()).use(
+handler.use(
   cors({
     credentials: true,
   })

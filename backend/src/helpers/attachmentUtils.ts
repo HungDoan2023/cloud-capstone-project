@@ -9,21 +9,21 @@ const logger = createLogger("Attach file storage");
 export class AttachmentUtils {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
-    private readonly todosTable = process.env.TODOS_TABLE
+    private readonly PRODUCTsTable = process.env.PRODUCTS_TABLE
   ) {}
 
   async updateAttachmentUrl(
-    todoId: string,
+    PRODUCTId: string,
     userId: string,
     url: string
   ): Promise<string> {
-    logger.info("Update attachment url of todo");
+    logger.info("Update attachment url of PRODUCT");
 
     await this.docClient
       .update({
-        TableName: this.todosTable,
+        TableName: this.PRODUCTsTable,
         Key: {
-          todoId: todoId,
+          PRODUCTId: PRODUCTId,
           userId: userId,
         },
         UpdateExpression: "set attachmentUrl = :url",
