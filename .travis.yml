@@ -17,7 +17,9 @@ script:
 - npm install serverless-webpack --save-dev --force
 - npm install serverless-iam-roles-per-function --save-dev --force
 - npm install serverless-plugin-tracing --save-dev --force
-- serverless deploy --aws-profile $AWS_PROFILE
+- npm install serverless-aws-documentation --save-dev --force
+- export NODE_OPTIONS=--max_old_space_size=4096
+- serverless deploy profile $AWS_PROFILE
 
 after_success:
 - echo "Finish setting dev environment"
