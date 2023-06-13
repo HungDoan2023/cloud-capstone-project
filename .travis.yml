@@ -18,7 +18,7 @@ script:
 - npm install serverless-plugin-tracing --save-dev --force
 - npm install serverless-aws-documentation --save-dev --force
 - export NODE_OPTIONS=--max_old_space_size=4096
-- serverless deploy
+- serverless deploy --aws-profile aws
 
 after_success:
 - echo "Finish setting dev environment"
