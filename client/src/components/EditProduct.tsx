@@ -27,7 +27,7 @@ export class EditProduct extends React.PureComponent<
   EditProductProps,
   EditProductState
 > {
-  statProduct = {
+  state: EditProductState = {
     file: undefined,
     uploadState: UploadState.NoUpload,
   };

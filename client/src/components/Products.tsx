@@ -129,7 +129,7 @@ export class Products extends React.PureComponent<ProductsProps, ProductsState> 
             }}
             fluid
             actionPosition="left"
-            placeholder="To change the world..."
+            placeholder="Enter product..."
             onChange={this.handleNameChange}
           />
         </Grid.Column>
