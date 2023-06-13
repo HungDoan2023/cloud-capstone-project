@@ -6,7 +6,6 @@ install:
 - echo "Installing serverless, library"
 - npm install serverless --save-dev --force
 - npm install --save-dev --force
-- npm audit fix --force
 
 before_install:
 - echo "Jump into backend directory"
@@ -18,7 +17,6 @@ script:
 - npm install serverless-webpack --save-dev --force
 - npm install serverless-iam-roles-per-function --save-dev --force
 - npm install serverless-plugin-tracing --save-dev --force
-- npm audit fix --force
 - serverless deploy --aws-profile $AWS_PROFILE
 
 after_success:
