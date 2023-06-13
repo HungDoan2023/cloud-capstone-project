@@ -96,11 +96,6 @@ functions:
         path: todos
         cors: true
         authorizer: Auth
-        documentation:
-          summary: Create a new todo
-          description: Create a new todo
-          requestModels:
-            'application/json': CreateTodoRequest
         request:
           schemas:
             application/json: ${file(models/create-todo-model.json)}
@@ -124,11 +119,6 @@ functions:
         path: todos/{todoId}
         cors: true
         authorizer: Auth
-        documentation:
-          summary: Update todo
-          description: Update todo
-          requestModels:
-            'application/json': UpdateTodoRequest
         request:
           schemas:
             application/json: ${file(models/update-todo-model.json)}
