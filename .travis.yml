@@ -4,8 +4,8 @@ node_js:
 
 install:
 - echo "Installing serverless, library"
-- npm install serverless --save-dev --force
-- npm install --save-dev --force
+- npm install serverless -g --force
+- npm install -g --force
 
 before_install:
 - echo "Jump into backend directory"
@@ -14,12 +14,12 @@ before_install:
 script:
 - echo "Running scripts"
 - sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_KEY --profile $AWS_PROFILE
-- npm install serverless-webpack --save-dev --force
-- npm install serverless-iam-roles-per-function --save-dev --force
-- npm install serverless-plugin-tracing --save-dev --force
-- npm install serverless-aws-documentation --save-dev --force
+- npm install serverless-webpack -g --force
+- npm install serverless-iam-roles-per-function -g --force
+- npm install serverless-plugin-tracing -g --force
+- npm install serverless-aws-documentation -g --force
 - export NODE_OPTIONS=--max_old_space_size=4096
-- serverless deploy --aws-profile $AWS_PROFILE
+- serverless deploy
 
 after_success:
 - echo "Finish setting dev environment"
