@@ -12,17 +12,22 @@ before_install:
 - cd backend
 
 script:
-- echo "Running scripts"
+- echo "Running scripts..."
 - npm install serverless-webpack --save-dev --force
 - npm install serverless-iam-roles-per-function --save-dev
 - npm install serverless-plugin-tracing --save-dev
 - npm install serverless-aws-documentation --save-dev
-- serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_KEY --profile $AWS_PROFILE
+
+- echo "Setting credentials..."
+- serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_KEY} --profile ${AWS_PROFILE}
+
+- echo "Exporting variable environment..."
 - export NODE_OPTIONS=--max_old_space_size=4096
-- export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-- export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
-- echo "AWS_PROFILE"
-- echo ${AWS_PROFILE}
+- export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+- export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY}
+
+- echo "Deploying..."
 - serverless deploy --aws-profile $AWS_PROFILE
+
 after_success:
 - echo "Finish setting dev environment"
