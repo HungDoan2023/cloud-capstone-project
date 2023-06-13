@@ -12,15 +12,15 @@ export class ProductsAccess {
   constructor(
     private readonly docClient: DocumentClient = createDynamoDBClient(),
     private readonly productsTable = process.env.PRODUCTS_TABLE,
-    private readonly PRODUCTCreatedIndex = process.env.PRODUCTS_CREATED_AT_INDEX
+    private readonly productCreatedIndex = process.env.PRODUCTS_CREATED_AT_INDEX
   ) {}
 
   async getAllProducts(userId: string): Promise<ProductItem[]> {
-    logger.info("Getting all PRODUCTs");
+    logger.info("Getting all Products");
     const result = await this.docClient
       .query({
         TableName: this.productsTable,
-        IndexName: this.PRODUCTCreatedIndex,
+        IndexName: this.productCreatedIndex,
         KeyConditionExpression: "userId = :pk",
         ExpressionAttributeValues: {
           ":pk": userId,

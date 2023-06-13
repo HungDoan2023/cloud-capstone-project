@@ -1,6 +1,6 @@
 export interface ProductItem {
   userId: string
-  PRODUCTId: string
+  productId: string
   createdAt: string
   name: string
   dueDate: string

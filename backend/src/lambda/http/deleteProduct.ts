@@ -7,10 +7,10 @@ import { getUserId } from "../utils";
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const PRODUCTId = event.pathParameters.PRODUCTId;
+    const productId = event.pathParameters.productId;
     const userId = getUserId(event);
 
-    await deleteProduct(PRODUCTId, userId);
+    await deleteProduct(productId, userId);
 
     return {
       statusCode: 201,

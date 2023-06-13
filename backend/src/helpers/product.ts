@@ -29,7 +29,7 @@ export async function createProduct(
   const itemId = uuid.v4();
 
   return await productAccess.createProduct({
-    PRODUCTId: itemId,
+    productId: itemId,
     userId: userId,
     name: createProductRequest.name,
     dueDate: createProductRequest.dueDate,
@@ -39,29 +39,29 @@ export async function createProduct(
 }
 
 export async function updateProduct(
-  PRODUCTId: string,
+  productId: string,
   userId: string,
-  updatePRODUCTRequest: UpdateProductRequest
+  updateProductRequest: UpdateProductRequest
 ): Promise<ProductUpdate> {
-  return await productAccess.updateProduct(PRODUCTId, userId, {
-    name: updatePRODUCTRequest.name,
-    dueDate: updatePRODUCTRequest.dueDate,
-    done: updatePRODUCTRequest.done,
+  return await productAccess.updateProduct(productId, userId, {
+    name: updateProductRequest.name,
+    dueDate: updateProductRequest.dueDate,
+    done: updateProductRequest.done,
   });
 }
 
-export async function deleteProduct(PRODUCTId: string, userId: string) {
-  await productAccess.deleteProduct(PRODUCTId, userId);
+export async function deleteProduct(productId: string, userId: string) {
+  await productAccess.deleteProduct(productId, userId);
 }
 
 export async function createAttachmentPresignedUrl(
-  PRODUCTId: string,
+  productId: string,
   userId: string
 ) {
   logger.info("create attachment presigned url");
   const imageId = uuid.v4();
   const url = `https://${bucketName}.s3.amazonaws.com/${imageId}`;
-  await attachmentUtils.updateAttachmentUrl(PRODUCTId, userId, url);
+  await attachmentUtils.updateAttachmentUrl(productId, userId, url);
   return getUploadUrl(imageId);
 }
 
